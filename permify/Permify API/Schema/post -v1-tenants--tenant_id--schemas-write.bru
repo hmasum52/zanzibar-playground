@@ -1,0 +1,48 @@
+meta {
+  name: post -v1-tenants--tenant_id--schemas-write
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base_url}}/v1/tenants/:tenant_id/schemas/write
+  body: json
+  auth: none
+}
+
+params:path {
+  tenant_id: t1
+}
+
+body:json {
+  {
+    "schema": ""
+  }
+}
+
+script:pre-request {
+  req.setBody({
+    schema: `entity user {}
+  
+  entity organization {
+  
+      // organizational roles
+      relation admin @user
+      relation member @user
+  
+  }
+  
+  entity repository {
+  
+      // represents repositories parent organization
+      relation parent @organization
+  
+      // represents owner of this repository
+      relation owner  @user
+  
+      // permissions
+      permission edit   = parent.admin or owner
+      permission delete = owner
+  }`
+  })
+}

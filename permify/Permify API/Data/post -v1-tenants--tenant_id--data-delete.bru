@@ -1,0 +1,30 @@
+meta {
+  name: post -v1-tenants--tenant_id--data-delete
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/v1/tenants/{tenant_id}/data/delete
+  body: json
+  auth: none
+}
+
+params:path {
+  tenant_id: 
+}
+
+body:json {
+  {
+    "tuple_filter": {
+      "entity": "",
+      "relation": "",
+      "subject": {
+        "type": "",
+        "ids": [],
+        "relation": ""
+      }
+    },
+    "attribute_filter": ""
+  }
+}

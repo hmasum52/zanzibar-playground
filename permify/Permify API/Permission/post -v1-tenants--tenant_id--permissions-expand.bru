@@ -1,0 +1,28 @@
+meta {
+  name: post -v1-tenants--tenant_id--permissions-expand
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/v1/tenants/{tenant_id}/permissions/expand
+  body: json
+  auth: none
+}
+
+params:path {
+  tenant_id: 
+}
+
+body:json {
+  {
+    "metadata": {
+      "schema_version": "",
+      "snap_token": ""
+    },
+    "entity": "",
+    "permission": "",
+    "context": "",
+    "arguments": []
+  }
+}

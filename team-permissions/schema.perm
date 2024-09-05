@@ -1,0 +1,35 @@
+entity user {}
+
+entity organization {
+
+   // organizational user types
+   relation admin @user
+   relation member @user
+}
+
+entity team {
+
+   // represents direct member of the team
+   relation manager @user @organization#member
+   relation member @user @organization#member
+
+   // reference for organization that team belong
+   relation org @organization
+}
+
+entity document {
+
+   // refers owner of the document
+   relation owner @user
+
+   // reference for team that team resource belongs
+   relation team @team
+
+   // reference for organization that resource belongs
+   relation org @organization
+
+   // permissions
+   action view = team.member or team.manager or org.admin or owner
+   action edit = team.manager or org.admin or owner
+   action delete = team.manager or org.admin
+}

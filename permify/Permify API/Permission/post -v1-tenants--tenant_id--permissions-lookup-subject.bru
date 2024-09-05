@@ -1,0 +1,34 @@
+meta {
+  name: post -v1-tenants--tenant_id--permissions-lookup-subject
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/v1/tenants/{tenant_id}/permissions/lookup-subject
+  body: json
+  auth: none
+}
+
+params:path {
+  tenant_id: 
+}
+
+body:json {
+  {
+    "metadata": {
+      "schema_version": "",
+      "snap_token": "",
+      "depth": ""
+    },
+    "entity": "",
+    "permission": "",
+    "subject_reference": {
+      "type": "",
+      "relation": ""
+    },
+    "context": "",
+    "page_size": "",
+    "continuous_token": ""
+  }
+}

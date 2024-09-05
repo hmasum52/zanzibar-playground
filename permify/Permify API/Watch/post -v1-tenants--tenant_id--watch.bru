@@ -1,0 +1,21 @@
+meta {
+  name: post -v1-tenants--tenant_id--watch
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/v1/tenants/:id/watch
+  body: json
+  auth: none
+}
+
+params:path {
+  id: t1
+}
+
+body:json {
+  {
+    "snap_token": ""
+  }
+}

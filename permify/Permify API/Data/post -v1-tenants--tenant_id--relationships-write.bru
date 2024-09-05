@@ -1,0 +1,24 @@
+meta {
+  name: post -v1-tenants--tenant_id--relationships-write
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{base_url}}/v1/tenants/{tenant_id}/relationships/write
+  body: json
+  auth: none
+}
+
+params:path {
+  tenant_id: 
+}
+
+body:json {
+  {
+    "metadata": {
+      "schema_version": ""
+    },
+    "tuples": []
+  }
+}

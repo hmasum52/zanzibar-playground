@@ -1,0 +1,18 @@
+meta {
+  name: post -v1-tenants-create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/v1/tenants/create
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "id": "mayerdua",
+    "name": "Mayer dua"
+  }
+}

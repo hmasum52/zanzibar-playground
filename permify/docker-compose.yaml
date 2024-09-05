@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+    permify:
+        image: "ghcr.io/permify/permify:latest"
+        restart: "always"
+        ports:
+            - "3476:3476"
+            - "3478:3478"
+        depends_on:
+            - "database"
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:3476/healthz"]
+            interval: 10s
+            retries: 10
+            start_period: 60s
+        environment:
+            - "PERMIFY_DATABASE_ENGINE=postgres"
+            - "PERMIFY_DATABASE_URI=postgresql://postgres:secret@database:5432/permify"
+            - "PERMIFY_DATABASE_AUTO_MIGRATE: false"
+
+    database:
+        image: "postgres"
+        ports:
+            - "5432:5432"
+        environment:
+            - "POSTGRES_PASSWORD=secret"
+            - "POSTGRES_DB=permify"
+
+volumes:
+    pg-data:

@@ -1,0 +1,32 @@
+meta {
+  name: post -v1-tenants--tenant_id--data-attributes-read
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/v1/tenants/{tenant_id}/data/attributes/read
+  body: json
+  auth: none
+}
+
+params:path {
+  tenant_id: 
+}
+
+body:json {
+  {
+    "metadata": {
+      "snap_token": ""
+    },
+    "filter": {
+      "entity": {
+        "type": "",
+        "ids": []
+      },
+      "attributes": []
+    },
+    "page_size": "",
+    "continuous_token": ""
+  }
+}

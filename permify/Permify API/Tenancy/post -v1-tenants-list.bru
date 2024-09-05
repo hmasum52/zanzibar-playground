@@ -1,0 +1,18 @@
+meta {
+  name: post -v1-tenants-list
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{base_url}}/v1/tenants/list
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "page_size": "1",
+    "continuous_token": ""
+  }
+}

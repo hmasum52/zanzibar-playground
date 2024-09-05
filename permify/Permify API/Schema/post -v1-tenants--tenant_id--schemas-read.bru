@@ -1,0 +1,23 @@
+meta {
+  name: post -v1-tenants--tenant_id--schemas-read
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/v1/tenants/:tenant_id/schemas/read
+  body: json
+  auth: none
+}
+
+params:path {
+  tenant_id: t1
+}
+
+body:json {
+  {
+    "metadata": {
+      "schema_version": ""
+    }
+  }
+}

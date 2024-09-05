@@ -1,0 +1,22 @@
+meta {
+  name: post -v1-tenants--tenant_id--data-run-bundle
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base_url}}/v1/tenants/{tenant_id}/data/run-bundle
+  body: json
+  auth: none
+}
+
+params:path {
+  tenant_id: 
+}
+
+body:json {
+  {
+    "name": "",
+    "arguments": {}
+  }
+}
