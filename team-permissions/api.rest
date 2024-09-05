@@ -1,0 +1,17 @@
+@url=http://localhost:3000
+
+### health
+GET {{url}} HTTP/1.1
+
+
+
+### login
+POST {{url}}/login HTTP/1.1
+content-type: application/json
+
+{
+  "username": "admin",
+  "user_id": "1",
+  "role": "admin"
+}
+

@@ -1,18 +1,41 @@
 const express = require("express");
+const router = require("express-promise-router")();
 const app = express();
+const cors = require("cors"); 
+const morgan = require("morgan");
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 require("dotenv").config();
 
+const  { signAccessToken } = require("./jwt");
+
+app.use(express.json()); // Add this line to parse the request body as JSON
+app.use(router);
+app.use(cors());
+app.use(morgan("dev"));
+
 
 // req.isAuthenticated is provided from the auth router
-app.get("/", (req, res) => {
-  res.send(req.oidc.isAuthenticated() ? "Logged in" : "Logged out");
+router.get("/", (req, res) => {
+  res.send({
+    message: "Hello from the other side!",
+  });
 });
 
-// The /profile route will show the user profile as JSON
-app.get("/profile",  (req, res) => {
-  res.send(JSON.stringify(req.oidc.user));
+
+router.post("/login", async (req, res) => {
+  console.log("Login request received");
+  const user_id = req.body.user_id;
+  const username = req.body.username;
+  const role = req.body.role;
+
+  if ( !user_id || !username || !role) {
+    return res.status(400).send("Missing required fields");
+  }
+
+  const accessToken = signAccessToken(user_id, username, role);
+  res.send({ accessToken });
 });
+
 
 // checkPermission middleware that lets you check 
 // whether user authorized to perform specific action 
@@ -69,7 +92,7 @@ const checkPermissions = (permissionType) => {
 };
 
 // view the document
-app.get("/docs/:id", checkPermissions("view"), (req, res) => {
+router.get("/docs/:id", checkPermissions("view"), (req, res) => {
 
   /// Result
   res.send(`User:${req.userInfo.sid} is ${req.authorized} to view document:${req.params.id}`);
@@ -77,7 +100,7 @@ app.get("/docs/:id", checkPermissions("view"), (req, res) => {
 });
 
 // edit the resource
-app.put("/docs/:id", checkPermissions("edit"), (req, res) => {
+router.put("/docs/:id", checkPermissions("edit"), (req, res) => {
  
   // Result
   res.send(`User:${req.userInfo.sid} to edit document:${req.params.id}`);
@@ -85,7 +108,7 @@ app.put("/docs/:id", checkPermissions("edit"), (req, res) => {
 });
 
 // delete the resource
-app.delete("/docs/:id", checkPermissions("delete"), (req, res) => {
+router.delete("/docs/:id", checkPermissions("delete"), (req, res) => {
 
   // Result
   res.send(`User:${req.userInfo.sid} to delete document:${req.params.id}`);
