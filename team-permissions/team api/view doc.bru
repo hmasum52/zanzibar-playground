@@ -1,0 +1,19 @@
+meta {
+  name: view doc
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{base_url}}/docs/:doc_id
+  body: none
+  auth: none
+}
+
+params:path {
+  doc_id: 1
+}
+
+headers {
+  authorization: bearer {{accessToken}}
+}

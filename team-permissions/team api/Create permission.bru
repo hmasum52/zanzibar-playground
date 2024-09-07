@@ -1,0 +1,36 @@
+meta {
+  name: Create permission
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/permissions
+  body: json
+  auth: none
+}
+
+headers {
+  authorization: Bearer {{accessToken}}
+}
+
+body:json {
+  {
+      "metadata": {
+          "schema_version": ""
+      },
+      "tuples": [
+          {
+              "entity": {
+                  "type": "document",
+                  "id": "1"
+              },
+              "relation": "owner",
+              "subject": {
+                  "type": "user",
+                  "id": "1"
+              }
+          }
+      ]
+  }
+}

@@ -1,7 +1,7 @@
-const { sign } = require('jsonwebtoken');
+const { sign, verify } = require('jsonwebtoken');
 require("dotenv").config();
 
-const jwtSecretKey = process.env.JWT_SECRET_KEY;
+const jwtSecretKey = process.env.ACCESS_TOKEN_SECRET;
 
 function signAccessToken(user_id, username, role) {
   const accessToken = sign(
@@ -14,6 +14,11 @@ function signAccessToken(user_id, username, role) {
   return accessToken;
 }
 
+function verifyAccessToken(token) {
+  return verify(token, jwtSecretKey);
+}
+
 module.exports = {
     signAccessToken,
+    verifyAccessToken
     };

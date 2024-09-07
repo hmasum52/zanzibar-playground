@@ -6,6 +6,19 @@ meta {
 
 post {
   url: http://localhost:3000/login
-  body: none
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "username": "admin",
+    "user_id": "1",
+    "role": "admin"
+  }
+  
+}
+
+script:post-response {
+  bru.setEnvVar("accessToken", res.body.accessToken)
 }
