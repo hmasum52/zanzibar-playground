@@ -14,9 +14,13 @@ services:
             retries: 10
             start_period: 60s
         environment:
+            # https://docs.permify.co/setting-up/configuration
             - "PERMIFY_DATABASE_ENGINE=postgres"
             - "PERMIFY_DATABASE_URI=postgresql://postgres:secret@database:5432/permify"
             - "PERMIFY_DATABASE_AUTO_MIGRATE: false"
+            - "PERMIFY_RATE_LIMIT: 10000"
+            - "PERMIFY_SERVICE_PERMISSION_CONCURRENCY_LIMIT: 10000"
+            - "PERMIFY_SERVICE_PERMISSION_BULK_LIMIT: 10000"
 
     database:
         image: "postgres"

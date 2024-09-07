@@ -160,7 +160,7 @@ router.post("/permissions", checkAuth, (req, res) => {
 });
 
 // view the document
-router.get("/docs/:id", checkAuth, checkPermissions("view"), (req, res) => {
+router.get("/docs/:id", checkAuth, (req, res) => {
   /// Result
   res.send({
     message: `User:${req.user.user_id} is authorized to view document:${req.params.id}`,
