@@ -1,19 +1,43 @@
 import http from 'k6/http';
-import { check } from 'k6';
+import { check, sleep } from 'k6';
 
-export let options = {
-    stages: [
-        { duration: '5s', target: 50 },
-        { duration: '10s', target: 550 },
-        { duration: '5s', target: 0 },
-    ],
-    // thresholds: {
-    //     http_req_duration: ['p(95)<500'], // 95% of requests must complete below 500ms
-    // },
-};
+// export let options = {
+//     // stages: [
+//     //     { duration: '5s', target: 50 },
+//     //     { duration: '30s', target: 5000 },
+//     //     { duration: '5s', target: 0 },
+//     // ],
+//     rate: 10000, // 100 RPS
+//     duration: '5s',
+//     // thresholds: {
+//     //     http_req_duration: ['p(95)<500'], // 95% of requests must complete below 500ms
+//     // },
+// };
+
+// export const options = {
+//     // Key configurations for breakpoint in this section
+//     executor: 'ramping-arrival-rate', //Assure load increase if the system slows
+//     stages: [
+//       { duration: '10s', target: 10000 }, // just slowly ramp-up to a HUGE load
+//     ],
+//   };
+
+// https://k6.io/blog/how-to-generate-a-constant-request-rate-with-the-new-scenarios-api/
+export const options = {
+    scenarios: {
+      constant_request_rate: {
+        executor: 'constant-arrival-rate',
+        rate: 10000,
+        timeUnit: '1s',
+        duration: '1m',
+        preAllocatedVUs: 100,
+        maxVUs: 10000,
+      },
+    },
+  };
 
 
-export default function() {
+function testLocal(){
     let url = 'http://localhost:3000/docs/1';
     let params = {
         headers: {
@@ -27,4 +51,45 @@ export default function() {
     check(res, {
         'status is 200': (r) => r.status === 200,
     });
+}
+
+function testPermify() {
+    // body params of Permify check request
+    const bodyParams = {
+        metadata: {
+          schema_version: "",
+          snap_token: "",
+          depth: 20,
+        },
+        entity: {
+          type: "document",
+          id: "1"
+        },
+        permission: "view",
+        subject: {
+          type: "user",
+          id: "1",
+          relation: "",
+        },
+      };
+
+    let res = http.post(
+        "http://localhost:3476/v1/tenants/t1/permissions/check", 
+        JSON.stringify(bodyParams), {
+            headers: { 
+                "Content-Type": "application/json" 
+            },
+    });
+
+    let checkResJson = JSON.parse(res.body);
+    //console.log('Response:', checkResJson)
+    check(checkResJson, {
+        'status is 200': (r) => r.can === 'CHECK_RESULT_ALLOWED',
+    });
+
+   // sleep(0.1);
+}
+
+export default function() {
+    testPermify();
 }
