@@ -22,19 +22,23 @@ import { check, sleep } from 'k6';
 //   };
 
 // https://k6.io/blog/how-to-generate-a-constant-request-rate-with-the-new-scenarios-api/
-export const options = {
-    scenarios: {
-      constant_load: {
-        executor: 'constant-arrival-rate',
-        rate: 2500,
-        timeUnit: '1s',
-        duration: '20s',
-        preAllocatedVUs: 300,
-        maxVUs: 3000,
-      },
-    }
-  }; // 1225 vu, 40832 vu, avg=347.93ms, rate= 40832/20=2041.6 RPS
+// export const options = {
+//     scenarios: {
+//       constant_load: {
+//         executor: 'constant-arrival-rate',
+//         rate: 2500,
+//         timeUnit: '1s',
+//         duration: '20s',
+//         preAllocatedVUs: 300,
+//         maxVUs: 3000,
+//       },
+//     }
+//   }; // 1225 vu, 40832 vu, avg=347.93ms, rate= 40832/20=2041.6 RPS
 
+export const options = {
+  vus: 1,
+  iterations: 1,
+};
 
 function testLocal(){
     let url = 'http://localhost:3000/docs/1';

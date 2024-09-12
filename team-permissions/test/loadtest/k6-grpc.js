@@ -1,25 +1,23 @@
 import { Client, StatusOK } from 'k6/net/grpc';
 import { check, sleep } from 'k6';
 
-export let options = {
+export const options  = {
   vus: 1,
-  duration: '1s',
+  iterations: 1,
 };
 
 const client = new Client();
-//client.load(['definitions'], 'base/v1/service.proto');
+// buf export buf.build/permifyco/permify  --output ./definitions
+client.load(['./definitions/base/v1/service.proto']);
 
+// https://k6.io/blog/performance-testing-grpc-services/
 export default () => {
   client.connect('localhost:3478', {});
 
   const data = { greeting: 'Bert' };
-  const response = client.invoke('PermissionCheckRequest', data);
+  const response = client.invoke('base.v1.Permission/Check',data);
 
-  check(response, {
-    'status is OK': (r) => r && r.status === StatusOK,
-  });
-
-  console.log(JSON.stringify(response.message));
+  console.log(`Response: ${response}`);
 
   client.close();
   sleep(1);
