@@ -2,13 +2,12 @@ import http from 'k6/http';
 import { check, sleep } from 'k6';
 
 // export let options = {
-//     // stages: [
-//     //     { duration: '5s', target: 50 },
-//     //     { duration: '30s', target: 5000 },
-//     //     { duration: '5s', target: 0 },
-//     // ],
-//     rate: 10000, // 100 RPS
-//     duration: '5s',
+//     stages: [
+//         { duration: '10s', target: 5000 },
+//         { duration: '10s', target: 5000 }, //avg=1.9s ,iterations=40988
+//     ],
+//     // rate: 10000, // 100 RPS
+//     // duration: '5s',
 //     // thresholds: {
 //     //     http_req_duration: ['p(95)<500'], // 95% of requests must complete below 500ms
 //     // },
@@ -25,16 +24,16 @@ import { check, sleep } from 'k6';
 // https://k6.io/blog/how-to-generate-a-constant-request-rate-with-the-new-scenarios-api/
 export const options = {
     scenarios: {
-      constant_request_rate: {
+      constant_load: {
         executor: 'constant-arrival-rate',
-        rate: 10000,
+        rate: 2500,
         timeUnit: '1s',
-        duration: '1m',
-        preAllocatedVUs: 100,
-        maxVUs: 10000,
+        duration: '20s',
+        preAllocatedVUs: 300,
+        maxVUs: 3000,
       },
-    },
-  };
+    }
+  }; // 1225 vu, 40832 vu, avg=347.93ms, rate= 40832/20=2041.6 RPS
 
 
 function testLocal(){
